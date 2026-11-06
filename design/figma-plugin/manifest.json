@@ -1,0 +1,9 @@
+{
+  "name": "Expense Tracker UI Builder",
+  "id": "expense-tracker-ui-builder",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": { "allowedDomains": ["none"] }
+}
