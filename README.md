@@ -7,7 +7,7 @@ Built as a hands-on project to go deeper into Java, Spring Boot, JPA/Hibernate a
 
 ## Stack
 
-- **Backend:** Java 21, Spring Boot 3 (Spring MVC, Spring Security 6, Spring Data JPA), Hibernate 6
+- **Backend:** Java 25, Spring Boot 4.1 (Spring MVC, Spring Security 7, Spring Data JPA), Hibernate 7
 - **Database:** MariaDB with Flyway migrations
 - **Frontend:** React + Vite + TypeScript, phone-first web app
 - **Tests:** JUnit 5, Mockito, Testcontainers
