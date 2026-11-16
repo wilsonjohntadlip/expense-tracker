@@ -14,6 +14,7 @@ public class Main {
         // starts Hibernate and opens the H2 database.
         try (EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpa-basics")) {
             Long accountId;
+            Account detachedAccount;
             try (EntityManager em = emf.createEntityManager()) {
                 em.getTransaction().begin();
                 Household household = new Household("Wilson Household");
@@ -49,11 +50,42 @@ public class Main {
                 Account accountToUpdate = em3.find(Account.class, accountId);
                 if (accountToUpdate != null) {
                     accountToUpdate.setName("GCash");
-                    System.out.println("Updated Account Name: " + accountToUpdate.getName());
+                    System.out.println("After setName (not saved yet): " + accountToUpdate.getName());
                 }
                 em3.getTransaction().commit();
             }
 
+            try (EntityManager em4 = emf.createEntityManager()) {
+                em4.getTransaction().begin();
+                detachedAccount = em4.find(Account.class, accountId);
+                em4.detach(detachedAccount);
+                detachedAccount.setName("GCash Wallet");
+                em4.getTransaction().commit();
+            }
+
+            try (EntityManager em5 = emf.createEntityManager()) {
+                em5.getTransaction().begin();
+                Account merged = em5.merge(detachedAccount);
+                em5.getTransaction().commit();
+                System.out.println("merged == detachedAccount: " + (merged == detachedAccount));
+                System.out.println("merged.getName(): " + merged.getName());
+            }
+
+            try (EntityManager em6 = emf.createEntityManager()) {
+                em6.getTransaction().begin();
+                Account toRemove = em6.find(Account.class, accountId);
+                em6.remove(toRemove);
+                em6.getTransaction().commit();
+            }
+
+            try (EntityManager em7 = emf.createEntityManager()) {
+                Account checkRemoved = em7.find(Account.class, accountId);
+                if (checkRemoved == null) {
+                    System.out.println("Account not found.");
+                } else {
+                    System.out.println("Account Name: " + checkRemoved.getName());
+                }
+            }
 
         }
     }
