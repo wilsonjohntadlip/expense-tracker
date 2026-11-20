@@ -55,4 +55,17 @@ class PersistenceContextTest {
         assertEquals(1, stats.getPrepareStatementCount());
     }
 
+    @Test
+    void sameRow_twoEntityManagers_runsTwoSelects() {
+        Account first;
+        Account second;
+        try (EntityManager em1 = emf.createEntityManager()) {
+            first = em1.find(Account.class, accountId);
+        }
+        try (EntityManager em2 = emf.createEntityManager()) {
+            second = em2.find(Account.class, accountId);
+        }
+        assertNotSame(first, second);
+        assertEquals(2, stats.getPrepareStatementCount());
+    }
 }
